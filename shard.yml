@@ -1,0 +1,9 @@
+name: orange
+version: 0.1.0
+
+authors:
+  - Donovan Mitchell <donovan.alan.mitchell@gmail.com>
+
+crystal: 0.34.0
+
+license: MIT
