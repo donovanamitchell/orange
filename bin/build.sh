@@ -1,2 +1,2 @@
 # build.sh
-crystal build ./src/orange.cr -o ./tmp/orange
+crystal build ./examples.cr -o ./tmp/orange
