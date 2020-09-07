@@ -15,7 +15,7 @@ module Orange
   a = Note.new(1.0, "A")
 
   sample_count = 44100
-  sample_rate = 44100.0
+  sample_rate = 44100
   amplitude = 0.125
 
   scaled_amplitude = (amplitude * Int16::MAX)
@@ -23,7 +23,7 @@ module Orange
     (a.sample(index / sample_rate) * scaled_amplitude).to_i16
   end
 
-  sound_buffer_0 = SF::SoundBuffer.from_samples(samples, 1, sample_rate.to_i)
+  sound_buffer_0 = SF::SoundBuffer.from_samples(samples, 1, sample_rate)
   sound_0 = SF::Sound.new(sound_buffer_0)
 
   sound_buffer_0.save_to_file("./sound_0.wav")
@@ -41,7 +41,7 @@ module Orange
   track = Track.new
   track.notes = [a, b, c, d, e, f, g]
   sample_count = (44100 * track.duration).to_i
-  sample_rate = 44100.0
+  sample_rate = 44100
   amplitude = 0.125
 
   track_samples = track.samples(0.0, sample_count, sample_rate)
@@ -51,7 +51,7 @@ module Orange
     (track_samples[index] * scaled_amplitude).to_i16
   end
 
-  sound_buffer_1 = SF::SoundBuffer.from_samples(samples, 1, sample_rate.to_i)
+  sound_buffer_1 = SF::SoundBuffer.from_samples(samples, 1, sample_rate)
   sound_1 = SF::Sound.new(sound_buffer_1)
 
   sound_buffer_1.save_to_file("./sound_1.wav")
@@ -59,7 +59,7 @@ module Orange
   # Example 2
 
   amplitude = 0.125
-  sample_rate = 44100.0
+  sample_rate = 44100
 
   a_track = Track.new
   a_track.notes << Note.new(8.0, "A")
@@ -94,8 +94,47 @@ module Orange
   sample_count = (song.duration * 44100).to_i
   samples = song.samples(0.0, sample_count, sample_rate, amplitude)
 
-  sound_buffer_2 = SF::SoundBuffer.from_samples(samples, 1, sample_rate.to_i)
+  sound_buffer_2 = SF::SoundBuffer.from_samples(samples, 1, sample_rate)
   sound_2 = SF::Sound.new(sound_buffer_2)
 
   sound_buffer_2.save_to_file("./sound_2.wav")
+
+  # Example 3
+  amplitude = 0.125
+  sample_rate = 44100
+
+  sine_a = Note.new(1.0, "A", Waveform::Sine)
+  sawtooth_a = Note.new(1.0, "A", Waveform::Sawtooth)
+  square_a = Note.new(1.0, "A", Waveform::Square)
+  triangle_a = Note.new(1.0, "A", Waveform::Triangle)
+  rest = Rest.new(0.125)
+
+  track = Track.new
+  track.notes = [sine_a, rest, sawtooth_a, rest, square_a, rest, triangle_a]
+  song = Song.new
+  song.tracks = [track]
+
+  sample_count = (song.duration * 44100).to_i
+  samples = song.samples(0.0, sample_count, sample_rate, amplitude)
+
+  sound_buffer_3 = SF::SoundBuffer.from_samples(samples, 1, sample_rate)
+  sound_3 = SF::Sound.new(sound_buffer_3)
+
+  sound_buffer_3.save_to_file("./sound_3.wav")
+
+  # Example 4
+  amplitude = 0.125
+  sample_rate = 44100
+
+  track = Track.new
+  track.notes << Whitenoise.new(1.0)
+  song = Song.new
+  song.tracks = [track]
+
+  sample_count = (song.duration * 44100).to_i
+  samples = song.samples(0.0, sample_count, sample_rate, amplitude)
+
+  sound_buffer_4 = SF::SoundBuffer.from_samples(samples, 1, sample_rate)
+
+  sound_buffer_4.save_to_file("./sound_4.wav")
 end

@@ -10,13 +10,13 @@ module Orange
       @notes.sum { |note| note.duration }
     end
 
-    def samples(seek : Float64, samples : Int, sample_rate : Float64)
+    def samples(seek : Float64, samples : Int, sample_rate : Int)
       note_index = 0
       previous_note_seconds = 0.0
       note = @notes[note_index]
 
       Array(Float64).new(samples) do |sample_index|
-        note_seconds_elapsed = (sample_index / sample_rate) - previous_note_seconds
+        note_seconds_elapsed = (sample_index / sample_rate.to_f) - previous_note_seconds
         if(note_seconds_elapsed > note.duration && note_index + 1 < @notes.size)
           note_index += 1
           previous_note_seconds += note.duration

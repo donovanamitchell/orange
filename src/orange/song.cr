@@ -18,7 +18,7 @@ module Orange
       @tracks << track
     end
 
-    def samples(seek : Float64, samples : Int, sample_rate : Float64, amplitude)
+    def samples(seek : Float64, samples : Int, sample_rate : Int, amplitude)
       scaled_amplitude = (amplitude * Int16::MAX)
 
       track_samples = @tracks.map do |track|
