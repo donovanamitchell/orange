@@ -3,11 +3,10 @@ require "crsfml"
 require "crsfml/system"
 require "crsfml/audio"
 
-
 module Orange
   # Example 0
 
-  a = Note.new(1.0, "A")
+  a = Note.new(1.0, "A4")
 
   sample_count = 44100
   sample_rate = 44100
@@ -25,13 +24,13 @@ module Orange
 
   # Example 1
 
-  a = Note.new(0.125, "A")
-  b = Note.new(0.125, "B")
-  c = Note.new(0.125, "C")
-  d = Note.new(0.125, "D")
-  e = Note.new(0.125, "E")
-  f = Note.new(0.125, "F")
-  g = Note.new(0.125, "G")
+  a = Note.new(0.125, "A4")
+  b = Note.new(0.125, "B4")
+  c = Note.new(0.125, "C5")
+  d = Note.new(0.125, "D5")
+  e = Note.new(0.125, "E5")
+  f = Note.new(0.125, "F5")
+  g = Note.new(0.125, "G5")
 
   track = Track.new
   track.notes = [a, b, c, d, e, f, g]
@@ -57,25 +56,25 @@ module Orange
   sample_rate = 44100
 
   a_track = Track.new
-  a_track.notes << Note.new(8.0, "A")
+  a_track.notes << Note.new(8.0, "A4")
 
   b_track = Track.new
-  b_track.notes << Note.new(7.0, "B")
+  b_track.notes << Note.new(7.0, "B4")
 
   c_track = Track.new
-  c_track.notes << Note.new(6.0, "C")
+  c_track.notes << Note.new(6.0, "C5")
 
   d_track = Track.new
-  d_track.notes << Note.new(5.0, "D")
+  d_track.notes << Note.new(5.0, "D5")
 
   e_track = Track.new
-  e_track.notes << Note.new(4.0, "E")
+  e_track.notes << Note.new(4.0, "E5")
 
   f_track = Track.new
-  f_track.notes << Note.new(3.0, "F")
+  f_track.notes << Note.new(3.0, "F5")
 
   g_track = Track.new
-  g_track.notes << Note.new(2.0, "G")
+  g_track.notes << Note.new(2.0, "G5")
 
   song = Song.new
   song.tracks << a_track
@@ -98,10 +97,10 @@ module Orange
   amplitude = 0.125
   sample_rate = 44100
 
-  sine_a = Note.new(1.0, "A", Waveform::Sine)
-  sawtooth_a = Note.new(1.0, "A", Waveform::Sawtooth)
-  square_a = Note.new(1.0, "A", Waveform::Square)
-  triangle_a = Note.new(1.0, "A", Waveform::Triangle)
+  sine_a = Note.new(1.0, "A4", Waveform::Sine)
+  sawtooth_a = Note.new(1.0, "A4", Waveform::Sawtooth)
+  square_a = Note.new(1.0, "A4", Waveform::Square)
+  triangle_a = Note.new(1.0, "A4", Waveform::Triangle)
   rest = Rest.new(0.125)
 
   track = Track.new
@@ -122,7 +121,7 @@ module Orange
   sample_rate = 44100
 
   track = Track.new
-  track.notes << Whitenoise.new(1.0)
+  track.notes << Note.new(1.0, 0.0, Waveform::Whitenoise)
   song = Song.new
   song.tracks = [track]
 
