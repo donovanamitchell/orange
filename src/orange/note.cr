@@ -1,28 +1,35 @@
-require "./waveform/*"
-
 module Orange
   class Note
     property duration : Float64
+    property envelope : Envelopes::Envelope
     property frequency : Float64
-    property waveform : Waveform::Wave.class
+    property waveform : Waveforms::Wave.class
 
-    # def initialize(*, frequency, waveform, envelope)
+    def initialize(
+        *,
+        note : String = "None",
+        frequency : Float64 | Nil = nil,
+        waveform = Waveforms::Sine,
+        duration = 0.0,
+        envelope = Envelopes::None.new,
+      )
 
-    # end
+      frequency ||= begin
+        raise "No note" unless NOTE_FREQUENCIES.has_key?(note)
 
-    def initialize(@duration, @frequency, @waveform = Waveform::Sine)
-    end
+        NOTE_FREQUENCIES[note]
+      end
 
-    def initialize(@duration, note : String, @waveform = Waveform::Sine)
-      raise "No note" unless NOTE_FREQUENCIES.has_key?(note)
-
-      @frequency = NOTE_FREQUENCIES[note]
+      @frequency = frequency
+      @waveform = waveform
+      @envelope = envelope
+      @duration = duration
     end
 
     def sample(second : Float)
       return 0.0 if second > @duration
 
-      @waveform.sample(second, @frequency)
+      @waveform.sample(second, @frequency) * envelope.amplitude_multiplier(second, @duration)
     end
   end
 end

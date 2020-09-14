@@ -4,9 +4,9 @@ require "crsfml/system"
 require "crsfml/audio"
 
 module Orange
-  # Example 0
+  # Example 0 - Note
 
-  a = Note.new(1.0, "A4")
+  a = Note.new(duration: 1.0, frequency: 440.0)
 
   sample_count = 44100
   sample_rate = 44100
@@ -22,15 +22,15 @@ module Orange
 
   sound_buffer_0.save_to_file("./tmp/sound_0.wav")
 
-  # Example 1
+  # Example 1 - Track
 
-  a = Note.new(0.125, "A4")
-  b = Note.new(0.125, "B4")
-  c = Note.new(0.125, "C5")
-  d = Note.new(0.125, "D5")
-  e = Note.new(0.125, "E5")
-  f = Note.new(0.125, "F5")
-  g = Note.new(0.125, "G5")
+  a = Note.new(duration: 0.125, note: "A4")
+  b = Note.new(duration: 0.125, note: "B4")
+  c = Note.new(duration: 0.125, note: "C5")
+  d = Note.new(duration: 0.125, note: "D5")
+  e = Note.new(duration: 0.125, note: "E5")
+  f = Note.new(duration: 0.125, note: "F5")
+  g = Note.new(duration: 0.125, note: "G5")
 
   track = Track.new
   track.notes = [a, b, c, d, e, f, g]
@@ -50,31 +50,31 @@ module Orange
 
   sound_buffer_1.save_to_file("./tmp/sound_1.wav")
 
-  # Example 2
+  # Example 2 - Song
 
   amplitude = 0.125
   sample_rate = 44100
 
   a_track = Track.new
-  a_track.notes << Note.new(8.0, "A4")
+  a_track.notes << Note.new(duration: 8.0, note: "A4")
 
   b_track = Track.new
-  b_track.notes << Note.new(7.0, "B4")
+  b_track.notes << Note.new(duration: 7.0, note: "B4")
 
   c_track = Track.new
-  c_track.notes << Note.new(6.0, "C5")
+  c_track.notes << Note.new(duration: 6.0, note: "C5")
 
   d_track = Track.new
-  d_track.notes << Note.new(5.0, "D5")
+  d_track.notes << Note.new(duration: 5.0, note: "D5")
 
   e_track = Track.new
-  e_track.notes << Note.new(4.0, "E5")
+  e_track.notes << Note.new(duration: 4.0, note: "E5")
 
   f_track = Track.new
-  f_track.notes << Note.new(3.0, "F5")
+  f_track.notes << Note.new(duration: 3.0, note: "F5")
 
   g_track = Track.new
-  g_track.notes << Note.new(2.0, "G5")
+  g_track.notes << Note.new(duration: 2.0, note: "G5")
 
   song = Song.new
   song.tracks << a_track
@@ -93,18 +93,19 @@ module Orange
 
   sound_buffer_2.save_to_file("./tmp/sound_2.wav")
 
-  # Example 3
+  # Example 3 - Waveforms
   amplitude = 0.125
   sample_rate = 44100
 
-  sine_a = Note.new(1.0, "A4", Waveform::Sine)
-  sawtooth_a = Note.new(1.0, "A4", Waveform::Sawtooth)
-  square_a = Note.new(1.0, "A4", Waveform::Square)
-  triangle_a = Note.new(1.0, "A4", Waveform::Triangle)
+  sine_a = Note.new(duration: 1.0, note: "A4", waveform: Waveforms::Sine)
+  sawtooth_a = Note.new(duration: 1.0, note: "A4", waveform: Waveforms::Sawtooth)
+  square_a = Note.new(duration: 1.0, note: "A4", waveform: Waveforms::Square)
+  triangle_a = Note.new(duration: 1.0, note: "A4", waveform: Waveforms::Triangle)
+  whitenoise = Note.new(duration: 1.0, note: "A4", waveform: Waveforms::Whitenoise)
   rest = Rest.new(0.125)
 
   track = Track.new
-  track.notes = [sine_a, rest, sawtooth_a, rest, square_a, rest, triangle_a]
+  track.notes = [sine_a, rest, sawtooth_a, rest, square_a, rest, triangle_a, rest, whitenoise]
   song = Song.new
   song.tracks = [track]
 
@@ -116,12 +117,42 @@ module Orange
 
   sound_buffer_3.save_to_file("./tmp/sound_3.wav")
 
-  # Example 4
+  # Example 4 - Envelope
   amplitude = 0.125
   sample_rate = 44100
 
+  rest = Rest.new(0.125)
+
+  waveforms = [
+    Waveforms::Sine,
+    Waveforms::Sawtooth,
+    Waveforms::Square,
+    Waveforms::Triangle,
+    Waveforms::Whitenoise,
+  ]
+  envelopes = [
+    Envelopes::None.new,
+    Envelopes::Adsr.new(
+      attack_amplitude: 1.25,
+      attack_time: 0.125,
+      decay_time: 0.125,
+      release_time: 0.125
+    ),
+  ]
+
   track = Track.new
-  track.notes << Note.new(1.0, 0.0, Waveform::Whitenoise)
+
+  waveforms.each do |wave|
+    envelopes.each do |envelope|
+      track.notes << Note.new(
+        duration: 1.0,
+        envelope: envelope,
+        waveform: wave,
+        frequency: 440.0
+      )
+      track.notes << rest
+    end
+  end
   song = Song.new
   song.tracks = [track]
 
@@ -129,6 +160,5 @@ module Orange
   samples = song.samples(0.0, sample_count, sample_rate, amplitude)
 
   sound_buffer_4 = SF::SoundBuffer.from_samples(samples, 1, sample_rate)
-
   sound_buffer_4.save_to_file("./tmp/sound_4.wav")
 end

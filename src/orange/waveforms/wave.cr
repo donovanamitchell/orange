@@ -1,9 +1,8 @@
 module Orange
-  module Waveform
-    class Wave
+  module Waveforms
+    abstract class Wave
       def self.sample(second, frequency : Float64)
-        # TODO: better errors
-        raise "unimplemented"
+        0.0
       end
     end
   end

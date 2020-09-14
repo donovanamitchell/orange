@@ -1,10 +1,10 @@
 require "./wave"
 
 module Orange
-  module Waveform
-    class Triangle < Wave
+  module Waveforms
+    class Square < Wave
       def self.sample(second : Float64, frequency : Float64)
-        1 - ((4 * frequency * (second % (1.0 / frequency)) - 2)).abs
+        second % (1.0 / frequency) > 0.5 / frequency ? 1.0 : -1.0
       end
     end
   end

@@ -2,7 +2,8 @@
 # https://www.joelstrait.com/nanosynth/
 # D:\Programs\pulseaudio-1.1\bin\pulseaudio.exe
 require "./orange/*"
-require "./orange/waveform/*"
+require "./orange/envelopes/*"
+require "./orange/waveforms/*"
 
 module Orange
   VERSION = "0.1.0"
